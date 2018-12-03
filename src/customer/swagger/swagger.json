@@ -1,0 +1,69 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "This service can be used to interact customer domain of the Westeros Shop",
+    "title": "Customer service rewritten in Go.",
+    "version": "0.0.1"
+  },
+  "host": "localhost",
+  "basePath": "/",
+  "paths": {
+    "/customers{customerId}": {
+      "get": {
+        "summary": "Handler to get a customer.",
+        "operationId": "getCustomer",
+        "parameters": [
+          {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "x-go-name": "CustomerId",
+            "description": "CustomerId to query.",
+            "name": "customerId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/customerResponse"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Customer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Id"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        }
+      },
+      "x-go-package": "github.com/gostore/src/cus2"
+    }
+  },
+  "responses": {
+    "customerResponse": {
+      "description": "CustomerResponse response model\n\nThis is used for returning a response with a single customer as body",
+      "schema": {
+        "$ref": "#/definitions/Customer"
+      }
+    }
+  }
+}

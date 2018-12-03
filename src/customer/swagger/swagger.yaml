@@ -1,0 +1,147 @@
+consumes:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+definitions:
+  GoaExampleCustomer:
+    description: A customer of Westeros Shop (default view)
+    example:
+      id: 5.804055118684469e+18
+      name: Qui praesentium est omnis praesentium corrupti.
+    properties:
+      id:
+        description: Unique customer ID
+        example: 5.804055118684469e+18
+        format: int64
+        type: integer
+      name:
+        description: Name of wine
+        example: Qui praesentium est omnis praesentium corrupti.
+        type: string
+    required:
+    - id
+    - name
+    title: 'Mediatype identifier: application/vnd.goa.example.customer+json; view=default'
+    type: object
+  error:
+    description: Error response media type (default view)
+    example:
+      code: invalid_value
+      detail: Value of ID must be an integer
+      id: 3F1FKVRR
+      meta:
+        timestamp: 1.458609066e+09
+      status: "400"
+    properties:
+      code:
+        description: an application-specific error code, expressed as a string value.
+        example: invalid_value
+        type: string
+      detail:
+        description: a human-readable explanation specific to this occurrence of the
+          problem.
+        example: Value of ID must be an integer
+        type: string
+      id:
+        description: a unique identifier for this particular occurrence of the problem.
+        example: 3F1FKVRR
+        type: string
+      meta:
+        additionalProperties: true
+        description: a meta object containing non-standard meta-information about
+          the error.
+        example:
+          timestamp: 1.458609066e+09
+        type: object
+      status:
+        description: the HTTP status code applicable to this problem, expressed as
+          a string value.
+        example: "400"
+        type: string
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+host: localhost:6543
+info:
+  description: The customer service of Westeros Shop
+  title: The customer service of Westeros Shop
+  version: ""
+paths:
+  /customers/:
+    get:
+      description: Lists all customers
+      operationId: customer#list
+      produces:
+      - application/vnd.goa.example.customer+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/GoaExampleCustomer'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: list customer
+      tags:
+      - customer
+  /customers/{customerID}:
+    get:
+      description: Get customer by id
+      operationId: customer#show
+      parameters:
+      - description: customer ID
+        in: path
+        name: customerID
+        required: true
+        type: integer
+      produces:
+      - application/vnd.goa.example.customer+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/GoaExampleCustomer'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: show customer
+      tags:
+      - customer
+  /swagger/{filepath}:
+    get:
+      operationId: swagger#/swagger/*filepath
+      parameters:
+      - description: Relative file path
+        in: path
+        name: filepath
+        required: true
+        type: string
+      responses:
+        "200":
+          description: File downloaded
+          schema:
+            type: file
+        "404":
+          description: File not found
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: Download public/swagger/
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  NotFound:
+    description: Not Found
+  OK:
+    description: OK
+    schema:
+      $ref: '#/definitions/GoaExampleCustomer'
+schemes:
+- http
+swagger: "2.0"

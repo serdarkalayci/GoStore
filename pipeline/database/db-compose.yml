@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  roach1:
+    image: cockroachdb/cockroach
+    command: start --insecure
+    expose:
+     - "8080"
+     - "26257"
+    ports:
+     - "26257:26257"
+     - "8080:8080"
+    networks:
+     - gostorenet
+    volumes:
+     - ../roachdata/roach1:/cockroach/cockroach-data
+  roach2:
+    image: cockroachdb/cockroach
+    command: start --insecure --join=roach1
+    networks:
+     - gostorenet
+    volumes:
+     - ../roachdata/roach2:/cockroach/cockroach-data
+  roach3:
+    image: cockroachdb/cockroach
+    command: start --insecure --join=roach1
+    networks:
+     - gostorenet
+    volumes:
+     - ../roachdata/roach3:/cockroach/cockroach-data
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   restart: always
+  #   ports:
+  #     - 5433:80
+  #   environment:
+  #       PGADMIN_DEFAULT_EMAIL: serdark@d-teknoloji.com.tr
+  #       PGADMIN_DEFAULT_PASSWORD: super
+  #   networks:
+  #    - gostorenet
+networks:
+  gostorenet:
